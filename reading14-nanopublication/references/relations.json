@@ -1,0 +1,3 @@
+{
+  "relations": ["reports", "measures", "increases", "decreases", "correlates_with", "causes", "associated_with", "compared_with", "limited_by", "supports", "has_part", "uses"]
+}

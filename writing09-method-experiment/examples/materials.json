@@ -1,0 +1,8 @@
+{
+  "steps": [{"order": 1, "input": "example dataset", "operation": "apply documented preprocessing", "output": "processed data", "condition": "not_reported"}],
+  "parameters": [{"name": "learning_rate", "value": "not_reported", "unit": "dimensionless", "target": "optimizer", "source": "example/config.yml:1", "status": "missing"}],
+  "datasets": [{"name": "example dataset", "version": "not_reported", "split": "not_reported", "source": "example only"}],
+  "controls": [], "repetitions": "not_reported",
+  "gaps": [{"item": "random seed", "type": "needs_confirmation", "evidence": "No seed in illustrative materials."}],
+  "reproduction": {"code_version": "not_reported", "environment": "not_reported", "command": "not_reported", "data_access": "not_reported"}
+}

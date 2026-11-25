@@ -1,0 +1,10 @@
+{
+  "assertions": [{
+    "id": "a1", "assertion": "The example source reports a measurement relationship.",
+    "subject": {"label": "example measurement"}, "relation": "reports", "object": {"label": "relationship"},
+    "qualifiers": {"population": "not_reported", "conditions": "not_reported"},
+    "evidence": {"location": {"section": "Results", "paragraph": 1, "page": "not_reported"}, "quote": "Illustrative excerpt", "type": "direct"},
+    "source": {"title": "Example paper", "authors": ["Example Author"], "year": "not_reported", "version": "not_reported", "identifier": "not_reported"},
+    "confidence": 0.5, "confidence_rationale": "Illustrative source span is explicit but bibliographic details are absent.", "quality_flags": ["source_missing"]
+  }]
+}

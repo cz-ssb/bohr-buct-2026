@@ -1,0 +1,13 @@
+{
+  "metadata": {"title": "Example paper", "authors": ["Example Author"], "year": "not_reported", "doi": "not_reported"},
+  "chapters": [{"id": "c1", "title": "Introduction", "source_label": "1 Introduction"}],
+  "notes": [{
+    "id": "n1", "chapter": "c1", "claim": "The example source frames a question about measurement reliability.",
+    "research_question": "How reliable is the measurement?", "data": "not_reported",
+    "method_conditions": "not_reported", "finding": "The source states the question but gives no result in this excerpt.",
+    "limitations": "Only an illustrative excerpt is available.",
+    "anchor": {"section": "1 Introduction", "paragraph": 1, "page": "not_reported", "quote": "Illustrative excerpt"},
+    "status": "supported"
+  }],
+  "uncertainties": []
+}

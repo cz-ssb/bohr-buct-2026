@@ -1,0 +1,50 @@
+{
+  "@context": {
+    "np": "http://www.nanopub.org/nschema#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "dct": "http://purl.org/dc/terms/",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
+  },
+  "@graph": [
+    {
+      "@id": "a1",
+      "@type": "np:Assertion",
+      "schema:text": "The example source reports a measurement relationship.",
+      "schema:about": {
+        "label": "example measurement"
+      },
+      "schema:relation": "reports",
+      "schema:object": {
+        "label": "relationship"
+      },
+      "schema:qualifiers": {
+        "population": "not_reported",
+        "conditions": "not_reported"
+      },
+      "prov:wasDerivedFrom": {
+        "title": "Example paper",
+        "authors": [
+          "Example Author"
+        ],
+        "year": "not_reported",
+        "version": "not_reported",
+        "identifier": "not_reported"
+      },
+      "schema:citation": {
+        "location": {
+          "section": "Results",
+          "paragraph": 1,
+          "page": "not_reported"
+        },
+        "quote": "Illustrative excerpt",
+        "type": "direct"
+      },
+      "schema:confidence": 0.5,
+      "schema:confidenceRationale": "Illustrative source span is explicit but bibliographic details are absent.",
+      "schema:qualityFlags": [
+        "source_missing"
+      ]
+    }
+  ]
+}

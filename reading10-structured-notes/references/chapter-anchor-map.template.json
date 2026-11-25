@@ -1,0 +1,24 @@
+{
+  "paper_id": "example-only",
+  "extraction_mode": "text | ocr | manual",
+  "chapters": [
+    {
+      "chapter_id": "c01",
+      "source_heading": "Exact heading as printed",
+      "normalized_heading": "Optional translated heading",
+      "source_order": 1,
+      "page_start": "not_reported",
+      "page_end": "not_reported",
+      "paragraphs": [
+        {
+          "paragraph_index": 1,
+          "page": "not_reported",
+          "figure_table": "not_reported",
+          "text_span_id": "optional stable local identifier",
+          "reading_order_status": "verified | uncertain"
+        }
+      ]
+    }
+  ],
+  "unresolved_mapping": []
+}
