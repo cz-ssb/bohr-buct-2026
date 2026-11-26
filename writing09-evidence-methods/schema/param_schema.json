@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "param_schema.json",
+  "title": "Parameter register record",
+  "description": "One row of parameters.csv. The authoritative vocabulary lives in scripts/extract_params.py::SCHEMA; this file documents the field contract and the names the checker recognises.",
+  "type": "object",
+  "required": ["param_id", "name", "value_raw", "unit", "target", "source", "status"],
+  "properties": {
+    "param_id": {"type": "string", "pattern": "^P\\d{3}$", "description": "Stable id cited from the chapter as [P0xx]."},
+    "name": {"type": "string", "description": "Canonical name when the key matched the vocabulary, otherwise the normalised key."},
+    "scope": {"type": "string", "enum": ["training", "evaluation", "unspecified"], "description": "Stage the value belongs to. Values are only compared inside one scope."},
+    "value_raw": {"type": "string", "description": "Exactly as written in the material, before any numeric parsing."},
+    "value_num": {"type": ["number", "null"], "description": "Parsed number, null when the value is symbolic (adamw, fp16, cifar10-v2)."},
+    "unit": {"type": "string", "description": "Unit implied by the value or by the vocabulary; empty when dimensionless."},
+    "target": {"type": "string", "description": "What the parameter acts on: optimizer, data loader, model, hardware, data split, environment."},
+    "source": {"type": "string", "pattern": "^[^#]+#L\\d+-L\\d+$", "description": "path#Lstart-Lend. A parameter without an address must not appear in the chapter."},
+    "all_sources": {"type": "array", "items": {"type": "string"}, "description": "Every address where this name/value was seen."},
+    "occurrences": {"type": "integer", "minimum": 1},
+    "status": {"type": "string", "enum": ["confirmed", "candidate", "conflict"], "description": "conflict means: same name, same scope, different values. It is never resolved by choosing one."}
+  },
+  "vocabulary": {
+    "note": "Names the extractor recognises. Keys are matched after removing spaces, underscores, hyphens and dots, so image_size, image-size and imageSize are one name.",
+    "entries": {
+      "learning_rate": {"unit": "", "target": "optimizer"},
+      "batch_size": {"unit": "samples", "target": "data loader"},
+      "epochs": {"unit": "epochs", "target": "training loop"},
+      "max_steps": {"unit": "steps", "target": "training loop"},
+      "seed": {"unit": "", "target": "run control"},
+      "weight_decay": {"unit": "", "target": "optimizer"},
+      "momentum": {"unit": "", "target": "optimizer"},
+      "optimizer": {"unit": "", "target": "optimizer"},
+      "scheduler": {"unit": "", "target": "optimizer"},
+      "warmup_steps": {"unit": "steps", "target": "optimizer"},
+      "train_split": {"unit": "ratio", "target": "data split"},
+      "val_split": {"unit": "ratio", "target": "data split"},
+      "test_split": {"unit": "ratio", "target": "data split"},
+      "num_gpus": {"unit": "count", "target": "hardware"},
+      "device": {"unit": "", "target": "hardware"},
+      "precision": {"unit": "", "target": "training"},
+      "image_size": {"unit": "px", "target": "preprocessing"},
+      "max_len": {"unit": "tokens", "target": "preprocessing"},
+      "num_layers": {"unit": "layers", "target": "model"},
+      "hidden_size": {"unit": "", "target": "model"},
+      "num_heads": {"unit": "heads", "target": "model"},
+      "dropout": {"unit": "ratio", "target": "model"},
+      "grad_clip": {"unit": "norm", "target": "training"},
+      "early_stopping": {"unit": "epochs", "target": "training loop"},
+      "temperature": {"unit": "", "target": "decoding"},
+      "top_k": {"unit": "", "target": "decoding"},
+      "num_runs": {"unit": "runs", "target": "repeat"},
+      "dataset": {"unit": "", "target": "data"},
+      "dataset_version": {"unit": "", "target": "data"},
+      "python_version": {"unit": "", "target": "environment"},
+      "torch_version": {"unit": "", "target": "environment"},
+      "cuda_version": {"unit": "", "target": "environment"}
+    }
+  },
+  "excluded_by_design": {
+    "note": "These are observed in materials but are not settings, so they never enter the register.",
+    "log_observations": ["epoch", "step", "iter", "loss", "acc", "accuracy", "val_acc", "train_loss", "time", "elapsed", "eta", "throughput", "gpu_util", "mem", "best_acc"],
+    "code_references": ["a bare identifier on the right-hand side, e.g. lr=lr or optimizer=args.opt", "any value containing a bracket, because it is an expression"]
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "note": "Controlled relation vocabulary. A relation outside this list is still allowed but must carry the quality_flag relation_unmapped, so an unmapped relation is visible to the reader instead of hidden in free text.",
+  "relations": {
+    "increases": {"uri": "sio:SIO_001215", "inverse": "decreases", "description": "subject raises the measured quantity of object"},
+    "decreases": {"uri": "sio:SIO_001216", "inverse": "increases", "description": "subject lowers the measured quantity of object"},
+    "outperforms": {"uri": "sio:SIO_000309", "inverse": "underperforms", "description": "subject achieves a better score than object under comparable conditions"},
+    "underperforms": {"uri": "sio:SIO_000310", "inverse": "outperforms", "description": "subject achieves a worse score than object"},
+    "is_superior_to": {"uri": "sio:SIO_000308", "inverse": "is_inferior_to", "description": "qualitative superiority, use when no metric is named"},
+    "correlates_with": {"uri": "sio:SIO_000986", "inverse": "correlates_with", "description": "statistical association without a causal claim"},
+    "causes": {"uri": "sio:SIO_000250", "inverse": "is_caused_by", "description": "intervention on subject changes object; only when the source asserts causality"},
+    "is_caused_by": {"uri": "sio:SIO_000251", "inverse": "causes", "description": "reverse direction of causes"},
+    "requires": {"uri": "sio:SIO_000232", "inverse": "is_required_by", "description": "subject cannot hold unless object does"},
+    "enables": {"uri": "sio:SIO_000233", "inverse": "is_enabled_by", "description": "subject makes object possible"},
+    "uses": {"uri": "sio:SIO_000244", "inverse": "is_used_by", "description": "subject employs object as a component, dataset or method"},
+    "measures": {"uri": "sio:SIO_000367", "inverse": "is_measured_by", "description": "subject is an instrument or metric reporting object"},
+    "achieves": {"uri": "sio:SIO_000300", "inverse": "is_achieved_by", "description": "subject attains object as a result"},
+    "replaces": {"uri": "sio:SIO_000506", "inverse": "is_replaced_by", "description": "subject substitutes for object"},
+    "extends": {"uri": "sio:SIO_000507", "inverse": "is_extended_by", "description": "subject builds on object with added scope"},
+    "contradicts": {"uri": "sio:SIO_000988", "inverse": "supports", "description": "subject and object cannot both hold as stated"},
+    "supports": {"uri": "sio:SIO_000987", "inverse": "contradicts", "description": "subject is evidence for object"},
+    "limits": {"uri": "sio:SIO_000240", "inverse": "is_limited_by", "description": "subject constrains the scope of object"},
+    "derives_from": {"uri": "sio:SIO_000244", "inverse": "is_source_of", "description": "provenance: subject is computed from object"}
+  },
+  "direction_rules": [
+    "increases/decreases name the quantity as object, not the model: 'top_k=2 increases throughput', not 'throughput increases top_k'",
+    "outperforms is directional: the better system is the subject, the reference is the object",
+    "correlates_with is symmetric, causes is not; swapping them changes the claim's truth value",
+    "when the source compares two systems without naming a metric, use is_superior_to and record the metric as a qualifier"
+  ]
+}

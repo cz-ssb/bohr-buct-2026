@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "result_schema.json",
+  "title": "result.json delivery contract",
+  "description": "Every case emits one result.json. The fields under output_contract come from case.json and are copied verbatim by name; the skill never renames a contract field.",
+  "type": "object",
+  "required": ["case_id", "status", "sources", "uncertainty", "change_log"],
+  "properties": {
+    "case_id": {"type": "string", "description": "Copied from case.json; never invented."},
+    "output_contract": {
+      "type": "object",
+      "description": "One key per field in case.json → output_contract, with the delivered value. A missing field is a contract violation, not a formatting choice."
+    },
+    "status": {
+      "type": "string",
+      "enum": ["success", "partial", "unable", "refused"],
+      "description": "success only when all six element groups are filled from materials, no conflict remains, and no unsupported number reached the prose."
+    },
+    "status_reasons": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Required for anything other than success. Values look like `required_element_group_empty: controls` or `material_conflicts: 2`."
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["path", "kind"],
+        "properties": {
+          "path": {"type": "string"},
+          "kind": {"type": "string", "enum": ["config", "code", "log", "doc", "data", "unknown"]},
+          "lines": {"type": "integer"}
+        }
+      },
+      "description": "The material inventory actually read. Unreadable files are absent here and present in uncertainty."
+    },
+    "uncertainty": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["kind", "detail"],
+        "properties": {
+          "kind": {"type": "string", "enum": ["material_gap", "material_conflict", "unsupported_number", "absent_parameter"]},
+          "detail": {"type": "string"},
+          "evidence": {"type": "string"}
+        }
+      }
+    },
+    "change_log": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["step", "detail"],
+        "properties": {"step": {"type": "string"}, "detail": {"type": "string"}}
+      },
+      "description": "What the run did, in order: collect, extract, build. Not a narrative of the paper."
+    },
+    "files": {
+      "type": "object",
+      "description": "Relative paths of the delivered artifacts inside the output dir."
+    }
+  },
+  "consistency_rules": [
+    "a conflict in gaps.json must appear as a material_conflict uncertainty entry",
+    "any status other than success must carry status_reasons",
+    "a parameter row whose source address points at a file absent from evidence.csv is a violation",
+    "an empty required element group forces partial, it does not force prose"
+  ]
+}

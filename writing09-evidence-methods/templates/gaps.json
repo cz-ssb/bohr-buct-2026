@@ -1,0 +1,25 @@
+{
+  "gaps": [
+    {
+      "kind": "missing",
+      "item": "<what the materials never state>",
+      "question": "<the one question the author must answer before the chapter can be finished>",
+      "evidence": "<path#line, or the note that nothing in the materials covers it>"
+    },
+    {
+      "kind": "conflict",
+      "item": "<the parameter or fact that disagrees>",
+      "question": "<which of the sources produced the reported result>",
+      "evidence": "<source A versus source B>"
+    },
+    {
+      "kind": "needs_confirmation",
+      "item": "<what is stated ambiguously>",
+      "question": "<what to confirm, phrased so a yes/no or a value settles it>",
+      "evidence": "<the line that is ambiguous>"
+    }
+  ],
+  "conflicts_from_materials": [],
+  "schema_names_absent": [],
+  "note": "kind is one of missing | conflict | needs_confirmation; a gap is never resolved by prose"
+}

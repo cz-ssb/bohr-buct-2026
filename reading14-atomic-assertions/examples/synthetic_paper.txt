@@ -1,0 +1,17 @@
+Abstract. Sparse expert routing reduces inference cost while preserving accuracy in large language models. We describe a routing scheme that activates a subset of experts per token, and we test it on CIFAR-10 v2 with a twelve-layer model.
+
+1. Introduction. Sparse mixture-of-experts models activate only a subset of parameters per token, and prior work reports that this reduces compute by 40% without measurable accuracy loss (Shazeer et al., 2017). That claim is widely cited but rarely re-measured under a fixed budget.
+
+2. Method. We train a router with top_k = 2 over six experts, using a cosine schedule with a warmup of 500 steps. The learning rate is 3e-4 and the batch size is 64. Every run uses seed 42. Training stops after 40 epochs, or earlier when validation accuracy fails to improve for 10 epochs. The evaluation batch size is 32 and runs in fp16 on a single device.
+
+[Page 2]
+
+3. Results. The sparse model reaches 71.8% test accuracy, whereas the dense baseline reaches 68.4%. Sparse routing therefore improves accuracy by 3.4 points while reducing floating point operations by 35%. The gain holds for image sizes from 160 to 224 pixels, but it disappears at 96 pixels, where both models converge to roughly 61%. Accuracy improvements of this size may not transfer to other datasets or other model depths.
+
+4. Discussion. Our results suggest that expert count matters more than routing depth. A larger expert pool improved accuracy by at most 0.4 points, and the effect was not statistically significant across three seeds.
+
+[Page 3]
+
+5. Limitations. The reported numbers come from a single seed, so the variance of the gain is not established. The sparse router was evaluated only on image classification and only at 224 pixels during training.
+
+6. Conclusion. Two of six experts per token is enough to reproduce the reported gain under a fixed compute budget, provided the split index files and the seed are preserved.

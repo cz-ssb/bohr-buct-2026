@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "assertion_schema.json",
+  "title": "Nanopublication assertion record",
+  "description": "One record of assertions.json. Field dictionary: every field exists so that a reader can leave the record, open the paper, and confirm it without asking the author anything.",
+  "type": "object",
+  "required": ["id", "assertion", "subject", "relation", "object", "qualifiers", "evidence",
+               "source", "confidence", "confidence_rationale", "quality_flags"],
+  "properties": {
+    "id": {"type": "string", "pattern": "^np-[a-z0-9]+-\\d{3}$", "description": "Stable record id; the suffix is the record's order inside one case."},
+    "assertion": {
+      "type": "string",
+      "description": "The claim, as the paper words it. Must occur in the source text — a paraphrase is rejected, because a claim that cannot be located cannot be checked."
+    },
+    "subject": {"type": "string", "description": "The entity or system the claim is about. Not a pronoun: `we` and `it` are resolved or the claim is dropped."},
+    "relation": {"type": "string", "description": "Controlled relation from references/relations.json; an unmapped term stays allowed but must carry relation_unmapped."},
+    "object": {"type": "string", "description": "The measured quantity, comparison partner, or condition. For increases/decreases the object is the quantity, never the model."},
+    "direction": {"type": "string", "enum": ["subject_to_object", "object_to_subject", "symmetric"], "description": "Explicit so a reader cannot invert a causal claim while reusing it."},
+    "qualifiers": {
+      "type": "object",
+      "description": "Conditions that bound the claim: dataset, population, range, metric, hedge.",
+      "properties": {
+        "scope": {"type": "string"},
+        "condition": {"type": "string"},
+        "metric": {"type": "string"},
+        "value": {"type": "string"},
+        "hedge": {"type": "string", "description": "Word-for-word from the source; `may not` must not become `does not`."}
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "required": ["quote", "page", "para", "sid", "type"],
+      "properties": {
+        "quote": {"type": "string", "maxLength": 200, "description": "Minimum sufficient verbatim span; character-for-character present on the stated page."},
+        "page": {"type": "integer", "minimum": 1},
+        "para": {"type": "integer", "minimum": 1},
+        "sid": {"type": "string", "pattern": "^s\\d{4}$", "description": "Sentence id from sentences.json, so the span can be widened in one step."},
+        "type": {"type": "string", "enum": ["direct", "indirect"], "description": "direct: the quote states the claim. indirect: the quote supports the claim only with its surrounding sentence."},
+        "chars": {"type": "integer"}
+      }
+    },
+    "source": {
+      "type": "object",
+      "required": ["title", "authors", "year", "identifier"],
+      "description": "Bibliographic chain. `not_reported` is a legitimate value; a plausible-looking DOI that the paper does not carry is not.",
+      "properties": {
+        "title": {"type": "string"},
+        "authors": {"type": "array", "items": {"type": "string"}},
+        "year": {"type": ["integer", "string"]},
+        "venue": {"type": "string"},
+        "doi": {"type": "string"},
+        "version": {"type": "string"},
+        "identifier": {"type": "string"}
+      }
+    },
+    "confidence": {"type": ["number", "null"], "minimum": 0, "maximum": 1, "description": "Follows evidence coverage, not authorial conviction. A hedged source claim cannot carry 0.95."},
+    "confidence_rationale": {"type": "string", "description": "Why this value: what the quote covers, what it leaves out, which ambiguity remains."},
+    "quality_flags": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Detected defects and honest limits. Known values: relation_unmapped, claim_hedged_in_source, negated_claim, approximate_value, upper_bound_only, attributed_not_reproduced, literature_claim, interpretation_not_measurement, multiple_facts_in_one_record, compound_claim_intentional, quote_trimmed_at_condition_boundary, atomicity warning flags from split_claims (long_span, multiple_coordination, multi_number, causal_plus_comparison)."
+    },
+    "section": {"type": "string", "description": "Section label from sentences.json, e.g. `S4 3. Results`."}
+  },
+  "atomicity_rule": {
+    "statement": "one record contains one claim that can be judged true or false on its own",
+    "operational": [
+      "two coordination markers (`and`, `but`, `whereas`, `while`) in one record means one record is too wide, unless the flag states why they belong together",
+      "more than three numbers in one record usually means two facts were merged",
+      "a causal claim and a comparison in the same record is a compound: keep it only when the compute saving is part of the claim's meaning"
+    ]
+  }
+}

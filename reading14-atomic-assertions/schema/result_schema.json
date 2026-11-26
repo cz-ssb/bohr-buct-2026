@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "result_schema.json",
+  "title": "result.json delivery contract (reading)",
+  "description": "One result.json per case. Contract fields come from case.json → output_contract and are copied by name; the skill never renames them.",
+  "type": "object",
+  "required": ["case_id", "status", "sources", "uncertainty", "change_log"],
+  "properties": {
+    "case_id": {"type": "string"},
+    "output_contract": {"type": "object", "description": "One key per contract field, with the delivered value."},
+    "status": {
+      "type": "string",
+      "enum": ["success", "partial", "unable", "refused"],
+      "description": "success only when every candidate was annotated, every quote verified, and no source field is missing."
+    },
+    "status_reasons": {"type": "array", "items": {"type": "string"}},
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": {"type": "string"},
+          "year": {"type": ["integer", "string"]},
+          "doi": {"type": "string"},
+          "extractor": {"type": "string", "description": "pymupdf | pdfplumber | pypdf | pdftotext | plain_text"},
+          "pages": {"type": "integer"}
+        }
+      }
+    },
+    "uncertainty": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["kind", "detail"],
+        "properties": {
+          "kind": {"type": "string", "enum": ["unannotated_claim", "bind_failure", "source_metadata_missing", "quality_flag"]},
+          "detail": {"type": "string"},
+          "evidence": {"type": "string"}
+        }
+      },
+      "description": "A claim that produced no record belongs here, not nowhere."
+    },
+    "change_log": {"type": "array", "items": {"type": "object", "required": ["step", "detail"]}},
+    "files": {"type": "object"}
+  },
+  "consistency_rules": [
+    "records dropped because no candidate could be annotated must appear as unannotated_claim",
+    "a quote that failed verbatim binding must appear as bind_failure, not be silently replaced",
+    "source metadata that the paper does not carry stays `not_reported` and is listed in source_metadata_missing",
+    "any status other than success carries status_reasons"
+  ]
+}
