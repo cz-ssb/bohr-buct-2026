@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "description": "Heading vocabulary used by build_notes.py to detect a paper's own outline. Extend per discipline; the script also accepts numbered headings and their own words.",
+  "en": [
+    "abstract", "summary", "introduction", "background", "related work", "methods", "method",
+    "methodology", "materials and methods", "experiments", "experimental setup", "results",
+    "results and discussion", "discussion", "conclusions", "conclusion", "limitations",
+    "outlook", "references", "acknowledgements", "appendix", "data availability"
+  ],
+  "zh": [
+    "摘要", "引言", "前言", "背景", "相关工作", "方法", "材料与方法", "实验", "结果",
+    "结果与讨论", "讨论", "结论", "局限", "不足", "展望", "参考文献", "致谢", "附录"
+  ],
+  "numbered": ["1", "1.", "2.1", "III.", "IV."],
+  "zh_numbered": ["一、", "二、", "三、", "四、", "五、"],
+  "note": "A heading the vocabulary misses is not invented: the paragraph stays in the previous section and the run records outline uncertainty."
+}

@@ -1,0 +1,36 @@
+{
+  "paper": "<path or identifier of the paper>",
+  "field_order": ["research_question", "data", "method_conditions", "main_findings", "limitations"],
+  "fields": {
+    "research_question": {
+      "value": null,
+      "evidence": [],
+      "status": "not_reported",
+      "note": "what the paper sets out to answer; cite the sentence, not the field label"
+    },
+    "data": {
+      "value": null,
+      "evidence": [],
+      "status": "not_reported",
+      "note": "dataset / corpus / cohort / sample size, with version when stated"
+    },
+    "method_conditions": {
+      "value": null,
+      "evidence": [],
+      "status": "not_reported",
+      "note": "conditions under which the method holds: settings, parameters, environment"
+    },
+    "main_findings": {
+      "value": null,
+      "evidence": [],
+      "status": "not_reported",
+      "note": "the result the paper claims, with the number that carries it"
+    },
+    "limitations": {
+      "value": null,
+      "evidence": [],
+      "status": "not_reported",
+      "note": "the precondition under which the finding can fail; not a generic caveat"
+    }
+  }
+}

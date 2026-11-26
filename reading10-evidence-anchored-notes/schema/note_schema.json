@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "structured-reading-notes/v1",
+  "title": "Structured reading notes — field dictionary",
+  "description": "Field definitions for paper_card.json / notes.json. A field is never blank-and-silent: it is reported (with evidence), not_reported, uncertain or conflict.",
+  "type": "object",
+  "properties": {
+    "paper_card": {
+      "type": "object",
+      "required": ["research_question", "data", "method_conditions", "main_findings", "limitations"],
+      "additionalProperties": false,
+      "properties": {
+        "research_question": {"$ref": "#/$defs/field"},
+        "data": {"$ref": "#/$defs/field"},
+        "method_conditions": {"$ref": "#/$defs/field"},
+        "main_findings": {"$ref": "#/$defs/field"},
+        "limitations": {"$ref": "#/$defs/field"}
+      }
+    },
+    "notes": {
+      "type": "object",
+      "required": ["sections", "knowledge_items"],
+      "properties": {
+        "sections": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["section", "title", "pages"],
+            "properties": {
+              "section": {"type": "string", "description": "S0..Sk, matching anchors"},
+              "title": {"type": "string", "description": "the paper's own heading, not an invented one"},
+              "role": {"enum": ["section", "front_matter"],
+                       "description": "front_matter is the title block: kept for verification, not scored as a chapter"},
+              "pages": {"type": "array", "items": {"type": "integer"}, "minItems": 2, "maxItems": 2},
+              "purpose": {"$ref": "#/$defs/fieldOrNull"},
+              "method": {"$ref": "#/$defs/fieldOrNull"},
+              "result": {"$ref": "#/$defs/fieldOrNull"},
+              "conclusion": {"$ref": "#/$defs/fieldOrNull"}
+            }
+          }
+        },
+        "knowledge_items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["term", "definition", "kind"],
+            "properties": {
+              "term": {"type": "string"},
+              "definition": {"type": "string", "description": "as stated by the paper; paraphrase must be labelled"},
+              "kind": {"enum": ["concept", "variable", "metric", "method", "abbreviation", "lexicon"]},
+              "anchor_id": {"type": ["string", "null"]},
+              "page": {"type": ["integer", "null"]}
+            }
+          }
+        }
+      }
+    },
+    "result": {
+      "type": "object",
+      "required": ["case_id", "status", "sources", "uncertainty", "change_log"],
+      "properties": {
+        "case_id": {"type": "string"},
+        "status": {"enum": ["success", "partial", "unable", "refused"]},
+        "status_reason": {"type": ["string", "null"]},
+        "sources": {
+          "type": "object",
+          "properties": {
+            "paper": {"type": "string"},
+            "extractor": {"type": "string"},
+            "pages": {"type": "integer"}
+          }
+        },
+        "uncertainty": {
+          "type": "array",
+          "description": "one entry per thing a human must confirm or cannot be resolved by the run",
+          "items": {
+            "type": "object",
+            "required": ["kind", "detail"],
+            "properties": {
+              "kind": {"enum": ["extraction", "anchor", "field", "case_json", "runtime"]},
+              "detail": {"type": "string"},
+              "anchor_id": {"type": ["string", "null"]},
+              "needs_human": {"type": "boolean"}
+            }
+          }
+        },
+        "change_log": {
+          "type": "array",
+          "description": "what the run did, in order, so a reviewer can re-run it",
+          "items": {
+            "type": "object",
+            "required": ["step"],
+            "properties": {
+              "step": {"type": "string", "description": "pdf_to_pages | build_notes | semantic_fill | validate"},
+              "detail": {"type": "string"}
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "field": {
+      "type": "object",
+      "required": ["value", "evidence", "status"],
+      "properties": {
+        "value": {"type": ["string", "null"], "description": "short, paper-grounded; null when not reported"},
+        "evidence": {"type": "array", "items": {"type": "string"}, "description": "anchor ids from anchors.json"},
+        "status": {"enum": ["reported", "not_reported", "uncertain", "conflict"]},
+        "note": {"type": "string", "description": "why it is missing / what a human must confirm"},
+        "page": {"type": ["integer", "null"]}
+      }
+    },
+    "fieldOrNull": {
+      "type": ["object", "null"],
+      "properties": {
+        "text": {"type": "string"},
+        "anchor_id": {"type": "string"}
+      }
+    }
+  }
+}

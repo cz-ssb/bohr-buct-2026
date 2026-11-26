@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "note": "Starter abbreviation table. build_notes.py additionally extracts `Long form (ABBR)` pairs from the paper itself; these entries only carry lexicon-level hints and never claim a page anchor.",
+  "entries": {
+    "BERT": "Bidirectional Encoder Representations from Transformers",
+    "CNN": "convolutional neural network",
+    "DOI": "Digital Object Identifier",
+    "F1": "F1 score (harmonic mean of precision and recall)",
+    "GAN": "generative adversarial network",
+    "GNN": "graph neural network",
+    "LLM": "large language model",
+    "NLP": "natural language processing",
+    "ORCID": "Open Researcher and Contributor ID",
+    "PDF": "portable document format",
+    "RCT": "randomized controlled trial",
+    "RMSE": "root mean squared error",
+    "RNN": "recurrent neural network",
+    "SSIM": "structural similarity index measure",
+    "SVM": "support vector machine",
+    "UMAP": "uniform manifold approximation and projection"
+  }
+}
